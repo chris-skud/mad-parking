@@ -1,0 +1,32 @@
+@charset "UTF-8";
+body {
+  margin-top:62px;  
+}
+#map-canvas {height:700px;}
+.madpark {
+  background: url('../img/cars.png') 5px no-repeat;
+  height:39px;
+  width:250px;
+  height: 60px; 
+  overflow:hidden;
+  cursor: pointer; 
+  cursor: hand;
+  margin-left:20px;
+}
+.madpark h1 {
+  margin:0;
+  margin-left:50px;
+  white-space: nowrap;
+  font-size: 20px;
+}
+.madparktext {
+  font-family: 'Graduate', cursive; 
+  padding:22px;
+  color:#333!important;
+}
+.navbar-default {
+  border-bottom:3px solid #424242;  
+  box-shadow:         2px 2px 3px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+  -moz-box-shadow:    2px 2px 3px rgba(0,0,0,0.2);
+}

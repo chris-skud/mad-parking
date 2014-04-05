@@ -10,10 +10,10 @@ function ParkingMap() {
 ParkingMap.prototype.renderMap = function(mapDivId, parkingData) {
   this._mapDivId = mapDivId;
   this._parkingData = parkingData;
-
+  
   this.initializeMap();
-  this.setCurrentLocationMarker();
   this.setMapMarkers();
+  this.setCurrentLocationMarker();
 };
 
 
@@ -29,17 +29,22 @@ ParkingMap.prototype.initializeMap = function() {
 
 
 ParkingMap.prototype.setCurrentLocationMarker = function() {
-  // Set current location marker if browser supports it
+  /* Set current location marker if browser supports it.
+    Would like to get Geolocation.watchPosition() working at some point */
   var browserSupportFlag = new Boolean();
   var userLocation;
+  var themap = this._map; // get map in scope for geolocate closure below
+
   if(navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
-      userLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      console.log('the map object: ' + themap);
       marker = new google.maps.Marker({
         position: userLocation,
-        map: this._map,
-        title: 'Your location'
+        map: themap,
+        title: 'Your location',
+        icon: 'img/bluedot.png'
       });
 
     }, function() {
@@ -53,7 +58,6 @@ ParkingMap.prototype.setCurrentLocationMarker = function() {
     this.handleNoGeolocation(browserSupportFlag);
   }
 };
-
   
 ParkingMap.prototype.handleNoGeolocation = function(errorFlag) {
   var initialLocation;
@@ -99,7 +103,6 @@ ParkingMap.prototype.setMapMarkers = function() {
   else {
     for (var i = 0; i < this._parkingData.length; i++) {
 
-      // pick first addres is garage/lot has an array
       if ((Object.prototype.toString.call( this._parkingData[i].address) === '[object Array]')) {
         this._parkingData[i].address = this._parkingData[i].address[0];
       }

@@ -18,8 +18,10 @@ class MainPage(webapp2.RequestHandler):
     # Request parking data from smsmybus parking api
     parkingdata = self.getParking()
 
+    # set parking data 
     if parkingdata is None:
       parkingdata = 'null'
+    
     template_values = {
       'parkingData': parkingdata
     }
@@ -47,8 +49,8 @@ class MainPage(webapp2.RequestHandler):
         parkingdata = parkingresonse.content
         logging.info('The following parking data retrieved from ' + parkinguri + ': ' + parkingdata)
       
-        # cache it for 1 minute
-        if not memcache.add('parkingdata', parkingdata, 3600):
+        # cache it for 5 minutes
+        if not memcache.add('parkingdata', parkingdata, 300):
           logging.error('Memcache set failed.')
       else:
         parkingdata = None
