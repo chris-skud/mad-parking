@@ -28,7 +28,7 @@
       /* ParkingMap needs the map div id and the api.smsmybus.com/v1/getparking data */
       var parkingData = {{ parkingData }} || null;
       var parkingMap = new ParkingMap();
-      google.maps.event.addDomListener(window, 'load', parkingMap.renderMap('map-canvas', parkingData));
+      google.maps.event.addDomListener(window, 'load', parkingMap.renderMap('map-canvas', parkingData.lots));
     </script>
   </body>
 </html>

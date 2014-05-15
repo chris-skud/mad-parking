@@ -19,8 +19,8 @@ ParkingMap.prototype.renderMap = function(mapDivId, parkingData) {
 
 ParkingMap.prototype.initializeMap = function() {
   var mapOptions = {
-    zoom: 14,
-    center: new google.maps.LatLng(43.0670, -89.3870),
+    zoom: 13,
+    center: new google.maps.LatLng(43.068675, -89.402593),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   this._map = new google.maps.Map(document.getElementById('map-canvas'),
@@ -38,8 +38,7 @@ ParkingMap.prototype.setCurrentLocationMarker = function() {
   if(navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
-      userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      console.log('the map object: ' + themap);
+      userLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude); 
       marker = new google.maps.Marker({
         position: userLocation,
         map: themap,
@@ -102,43 +101,27 @@ ParkingMap.prototype.setMapMarkers = function() {
   }
   else {
     for (var i = 0; i < this._parkingData.length; i++) {
-
-      if ((Object.prototype.toString.call( this._parkingData[i].address) === '[object Array]')) {
-        this._parkingData[i].address = this._parkingData[i].address[0];
-      }
-
-      /* freeze variables per iteration of loop */
-      (function(currIndex, parkingData, that) {
-        geocoder.geocode( { 'address': parkingData[i].address + ', Madison, WI'}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            marker = new google.maps.Marker({
-              position: results[0].geometry.location,
-              map: that._map,
-              title: parkingData[currIndex].name,
-              icon: that.setMarkerIcon(parkingData[currIndex].open_spots)
-            });
-            
-            // add click handler to each marker
-            google.maps.event.addListener(marker, 'click', (function(marker, currIndex) {
-              return function() {
-                infowindow.setContent(parkingData[currIndex].name + '<br/>' 
-                  + parkingData[currIndex].address + '</br>'
-                  + parkingData[currIndex].open_spots
-                  + ' of '
-                  + parkingData[currIndex].total_spots
-                  + ' spots remaining'
-                );
-                infowindow.open(that._map, marker);
-              }
-            })(marker, currIndex));
-          } 
-          else {
-            alert('Geocode was not successful for the following reason: ' + status);
-          }
-        }); // end geocode
-
-      })(i, this._parkingData, this); 
-
+      marker = new google.maps.Marker({
+        position:  this._parkingData[i].coordinates,
+        map: this._map,
+        title: this._parkingData[i].name,
+        icon: this.setMarkerIcon(this._parkingData[i].openSpots)
+      });
+      
+      // add click handler to each marker
+      google.maps.event.addListener(marker, 'click', (function(marker, currIndex, parkingData, map) {
+        return function() {
+          infowindow.setContent(parkingData[currIndex].name + '<br/>' 
+            + parkingData[currIndex].address.street + '</br>'
+            + parkingData[currIndex].openSpots
+            + ' of '
+            + parkingData[currIndex].totalSpots
+            + ' spots remaining' + '</br>'
+            + '<a href="'+ parkingData[currIndex].webUrl + '">more info</a>'
+          );
+          infowindow.open(map, marker);
+        }
+      })(marker, i, this._parkingData, this._map));
     } // end for loop
   }
 };

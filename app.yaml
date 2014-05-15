@@ -24,5 +24,8 @@ handlers:
 - url: /js
   static_dir: public/js
 
+- url: /getparking
+  script: getparking.application
+
 - url: .*
   script: main.application

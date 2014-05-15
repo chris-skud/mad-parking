@@ -39,7 +39,7 @@ class MainPage(webapp2.RequestHandler):
       logging.info('parkingdata retrieved from cache: ' + parkingdata)
       return parkingdata
     else:
-      parkinguri = 'http://api.smsmybus.com/v1/getparking'
+      parkinguri = 'http://localhost:12080/parking/v2/lots'
       parkingresonse = urlfetch.fetch(url=parkinguri,
         method=urlfetch.GET,
         headers={'Content-Type': 'application/json'},
