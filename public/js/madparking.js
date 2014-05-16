@@ -20,7 +20,7 @@ ParkingMap.prototype.renderMap = function(mapDivId, parkingData) {
 ParkingMap.prototype.initializeMap = function() {
   var mapOptions = {
     zoom: 13,
-    center: new google.maps.LatLng(43.068675, -89.402593),
+    center: new google.maps.LatLng(43.0600417, -89.40123),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   this._map = new google.maps.Map(document.getElementById('map-canvas'),
