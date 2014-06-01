@@ -36,10 +36,10 @@ class MainPage(webapp2.RequestHandler):
     # from the http://api.smsmybus.com/v1/getparking.
     parkingdata = memcache.get('parkingdata')
     if parkingdata is not None:
-      logging.info('parkingdata retrieved from cache: ' + parkingdata)
+      #logging.info('parkingdata retrieved from cache: ' + parkingdata)
       return parkingdata
     else:
-      parkinguri = 'http://localhost:12080/parking/v2/lots'
+      parkinguri = 'http://api.smsmybus.com/parking/v2/lots'
       parkingresonse = urlfetch.fetch(url=parkinguri,
         method=urlfetch.GET,
         headers={'Content-Type': 'application/json'},
@@ -47,7 +47,7 @@ class MainPage(webapp2.RequestHandler):
       )
       if parkingresonse.status_code == 200:
         parkingdata = parkingresonse.content
-        logging.info('The following parking data retrieved from ' + parkinguri + ': ' + parkingdata)
+        #logging.info('The following parking data retrieved from ' + parkinguri + ': ' + parkingdata)
       
         # cache it for 5 minutes
         if not memcache.add('parkingdata', parkingdata, 300):
